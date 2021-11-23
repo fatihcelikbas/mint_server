@@ -10,11 +10,13 @@ import titleImage from '../images/favicon.png';
 import chubby1 from '../images/chubby-1.gif';
 import chubby2 from '../images/chubby-2.gif';
 import chubby3 from '../images/chubby-3.gif';
+import Wallet from '../components/wallet';
 
 
 function Home() {
   return (
     <div class="container w-full md:max-w-2xl mx-auto py-10 px-5 font-custom">
+      <Wallet />
       <Header img={titleImage} />
       <Title>What are CryptoKnightz?</Title>
       <Text>
