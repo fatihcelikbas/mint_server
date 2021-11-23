@@ -101,3 +101,5 @@ dist
 .tern-port
 
 .ssh
+
+.DS_Store
