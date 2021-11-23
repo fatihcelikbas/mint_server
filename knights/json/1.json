@@ -1,0 +1,39 @@
+{
+  "name": "Your Collection #1",
+  "description": "Remember to replace this description",
+  "image": "ipfs://NewUriToReplace/1.png",
+  "dna": "4c544ce0c2ff62b98674c5432e6ebe7810e4c395",
+  "edition": 1,
+  "date": 1637211855592,
+  "attributes": [
+    {
+      "trait_type": "background",
+      "value": "gray"
+    },
+    {
+      "trait_type": "houses",
+      "value": "horse"
+    },
+    {
+      "trait_type": "knights",
+      "value": "male2"
+    },
+    {
+      "trait_type": "body",
+      "value": "robe"
+    },
+    {
+      "trait_type": "face",
+      "value": "eye_patch"
+    },
+    {
+      "trait_type": "head",
+      "value": "vicious_helmet"
+    },
+    {
+      "trait_type": "weapon",
+      "value": "crossbow"
+    }
+  ],
+  "compiler": "HashLips Art Engine"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Your Collection #2",
+  "description": "Remember to replace this description",
+  "image": "ipfs://NewUriToReplace/2.png",
+  "dna": "9f81f3d8ab49162a424f403b2822b4e82b160f18",
+  "edition": 2,
+  "date": 1637211855632,
+  "attributes": [
+    {
+      "trait_type": "background",
+      "value": "red"
+    },
+    {
+      "trait_type": "houses",
+      "value": "snake"
+    },
+    {
+      "trait_type": "knights",
+      "value": "male3"
+    },
+    {
+      "trait_type": "body",
+      "value": "regular"
+    },
+    {
+      "trait_type": "face",
+      "value": "mustache"
+    },
+    {
+      "trait_type": "head",
+      "value": "regular_helmet"
+    },
+    {
+      "trait_type": "weapon",
+      "value": "sword"
+    }
+  ],
+  "compiler": "HashLips Art Engine"
+}
