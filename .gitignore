@@ -103,3 +103,5 @@ dist
 .ssh
 
 .DS_Store
+
+client/build/

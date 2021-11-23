@@ -1,4 +1,7 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const Knight = require('../models/Knight');
@@ -18,6 +21,10 @@ const checkJwt = jwt({
   issuer: `https://dev-bepfwwd0.us.auth0.com/`,
   algorithms: ['RS256']
 });
+
+router.use(helmet());
+router.use(bodyParser.urlencoded({extended: true}));
+router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
   try {
