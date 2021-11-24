@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const mongoose = require('mongoose');
 
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
@@ -13,12 +14,12 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://dev-bepfwwd0.us.auth0.com/.well-known/jwks.json`
+    jwksUri: 'https://mint-server.us.auth0.com/.well-known/jwks.json'
   }),
 
   // Validate the audience and the issuer.
-  audience: 'https://server.fatihcelikbas.com',
-  issuer: `https://dev-bepfwwd0.us.auth0.com/`,
+  audience: 'https://fatihcelikbas.com/api',
+  issuer: 'https://mint-server.us.auth0.com/',
   algorithms: ['RS256']
 });
 
@@ -56,7 +57,13 @@ router.post('/mint', async (req, res) => {
   res.json({ minted: knight.cid});
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/reset', (req, res) => {
+  const db = mongoose.connection;
+  db.dropDatabase()
+  res.status(200).end()
+});
+
+router.get('/knight/:id', async (req, res) => {
   let knight;
   try {
     knight = await Knight.findOne({cid: req.params.id.toString()});
@@ -69,23 +76,23 @@ router.get('/:id', async (req, res) => {
   res.json(knight);
 });
 
+
 router.use(checkJwt);
 
 router.post('/add', (req, res) => {
   const knight = new Knight({ 
-    name: req.body.name, 
-    description: req.body.description,
-    image: req.body.image, 
-    attributes: req.body.attributes, 
-    cid: req.body.id});
+    num: req.body.num, 
+    cid: req.body.id
+  });
 
   knight.save(function (err) {
     if(err) {
         return res.status(500).json({ message: err.message });
     }
+    res.json({added: req.body.id});
   });
 
-  res.json({added: req.body.id});
+  
 });
 
 module.exports = router
