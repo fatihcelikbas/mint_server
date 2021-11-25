@@ -15,7 +15,7 @@ knights.forEach(knight => {
   axios.post('http://localhost:5000/api/add', 
   {
     num: knight.id,
-    id: knight.tokenURI.slice(7)
+    cid: knight.tokenURI.slice(7)
   },
   {
     headers: headers

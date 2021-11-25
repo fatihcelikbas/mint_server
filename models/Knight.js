@@ -9,10 +9,6 @@ const knightSchema = new Schema({
     type: String,
     required: true,
   },
-  isMinted: {
-    type: Boolean,
-    default: false
-  }, 
 });
 const Knight = mongoose.model("Knight", knightSchema);
 module.exports = Knight;

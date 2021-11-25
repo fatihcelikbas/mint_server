@@ -2,10 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
-
+const constants = require('../constants/contract');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const Knight = require('../models/Knight');
+const axios = require('axios');
+
+const key = process.env.PINATA_KEY;
+const secret = process.env.PINATA_SECRET;
+const pinataSDK = require('@pinata/sdk');
+const pinata = pinataSDK(key, secret);
+
+const { getTokenUri } = require('../utils/interact');
+const { response } = require('express');
 
 var router = express.Router()
 
@@ -37,24 +46,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/mint', async (req, res) => {
-  let knight;
-  try {
-    knight = await Knight.findOne({isMinted: false});
-    if (knight == null) {
-      return res.status(404).json({ message: "All minted" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  knight.isMinted = true;
-  knight.save(function (err) {
-    if(err) {
-        return res.status(500).json({ message: err.message });
-    }
-  });
-
-  res.json({ minted: knight.cid});
+  return res.send("Not implemented");
 })
 
 router.get('/reset', (req, res) => {
@@ -64,16 +56,32 @@ router.get('/reset', (req, res) => {
 });
 
 router.get('/knight/:id', async (req, res) => {
-  let knight;
-  try {
-    knight = await Knight.findOne({cid: req.params.id.toString()});
-    if (knight == null || !knight.isMinted) {
-      return res.status(404).json({ message: "Cannot find Knight" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+  const id = req.params.id;
+
+  // quick input handling;
+  if (id == null || id < 0 || id > constants.MAX_SUPPLY) {
+    return res.status(404).json({ message: "Knight not found" });
   }
-  res.json(knight);
+
+  getTokenUri(id.toString())
+    .then(result => {
+      if (result) {        
+        axios.get(`https://ipfs.io/ipfs/${result.slice(7)}`)
+          .then(response => {
+            return res.json(response.data);
+          })
+          .catch(err => {
+            return res.status(500).json({ message: err.message });
+          })
+      }
+      else {
+        return res.json({});
+      }
+
+    })
+    .catch(err => {
+      return res.status(500).json({ message: err.message });
+    });
 });
 
 
@@ -82,17 +90,15 @@ router.use(checkJwt);
 router.post('/add', (req, res) => {
   const knight = new Knight({ 
     num: req.body.num, 
-    cid: req.body.id
+    cid: req.body.cid
   });
 
   knight.save(function (err) {
     if(err) {
         return res.status(500).json({ message: err.message });
     }
-    res.json({added: req.body.id});
-  });
-
-  
+    res.json({added: req.body.cid});
+  }); 
 });
 
 module.exports = router
